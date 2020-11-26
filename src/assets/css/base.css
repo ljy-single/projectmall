@@ -1,0 +1,47 @@
+@import "./normalize.css";
+
+/* :root -> 获取根元素html */
+:root {
+  /* 定义变量 */
+  --color-text: #666;
+  --color-high-text: #ff5777;
+  --color-background: #fff;
+  --font-size: 14px;
+  --line-height: 1.5;
+}
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  /* 禁止用户鼠标在页面上选中文字和图片 */
+  user-select: none;
+  background: var(--color-background);
+  color: var(--color-text);
+  width: 100vw;
+}
+
+a {
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+.left {
+  float: left;
+}
+
+.right {
+  float: right;
+}
+
+.clearfix::after,
+.clearfix::before {
+  display: table;
+  content: '';
+  clear: both;
+}
