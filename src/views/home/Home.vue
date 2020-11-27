@@ -3,10 +3,21 @@
     <nav-bar class="home-bar">
       <div slot="center">购物街</div>
     </nav-bar>
-    <HomeSwiper :banners="banners" class="home-swiper"></HomeSwiper>
-    <HomeRecommendView :recommends="recommends"></HomeRecommendView>
-    <TabControl :title="['流行','新款','详情']" class="tab-control" @tabClick="tabClick"></TabControl>
-    <GoodsList :goods="showGoods"></GoodsList>
+    <scroll
+      class="content"
+      ref="scroll"
+      :probe-type="3"
+      @scroll="contentScroll"
+      :pull-up-load="true"
+      @pullingUp="loadMore"
+    >
+      <home-swiper :banners="banners" class="home-swiper"></home-swiper>
+      <home-recommend-view :recommends="recommends"></home-recommend-view>
+      <tab-control :title="['流行','新款','详情']" class="tab-control" @tabClick="tabClick"></tab-control>
+      <goods-list :goods="showGoods"></goods-list>
+    </scroll>
+    <!-- 给组件添加点击事件，需要添加.native修饰符 -->
+    <BackTop @click.native="backClick" v-show="isShowBackTop"></BackTop>
   </div>
 </template>
 
@@ -17,6 +28,8 @@ import HomeRecommendView from "./childComps/HomeRecommendView";
 import NavBar from "components/common/navbar/NavBar";
 import TabControl from "components/content/tabcontrol/TabControl";
 import GoodsList from "components/content/goods/GoodsList";
+import Scroll from "components/common/scroll/Scroll";
+import BackTop from "components/content/backTop/BackTop";
 
 import { getHomeMultidata, getHomeData } from "network/home.js";
 export default {
@@ -31,6 +44,7 @@ export default {
         sell: { page: 0, list: [] },
       },
       currentType: "pop",
+      isShowBackTop: false,
     };
   },
   computed: {
@@ -63,7 +77,16 @@ export default {
           break;
       }
     },
-
+    backClick() {
+      this.$refs.scroll.scrollTo(0, 0, 300);
+    },
+    contentScroll(position) {
+      this.isShowBackTop = -position.y > 1000;
+    },
+    loadMore() {
+      // 加载更多
+      this.getHomeData(this.currentType);
+    },
     // 网络请求相关的方法
     getHomeMultidata() {
       getHomeMultidata().then((res) => {
@@ -76,6 +99,7 @@ export default {
       getHomeData(type, page).then((res) => {
         this.goods[type].list.push(...res.data.data.list);
         this.goods[type].page += 1;
+        this.$refs.scroll.finishPullUp();
       });
     },
   },
@@ -85,13 +109,16 @@ export default {
     HomeRecommendView,
     TabControl,
     GoodsList,
+    Scroll,
+    BackTop,
   },
 };
 </script>
 
 <style scoped>
 #home {
-  height: 15000px;
+  position: relative;
+  height: 100vh;
 }
 .home-bar {
   background-color: #ff8d99;
@@ -102,12 +129,20 @@ export default {
   right: 0;
   z-index: 9;
 }
-.home-swiper {
+/* .home-swiper {
   padding-top: 44px;
-}
+} */
 .tab-control {
   position: sticky;
   top: 44px;
   z-index: 8;
+}
+.content {
+  position: absolute;
+  top: 44px;
+  bottom: 49px;
+  left: 0;
+  right: 0;
+  overflow: hidden;
 }
 </style>
