@@ -1,6 +1,6 @@
 <template>
-  <div class="goods-item">
-    <img :src="goodsItem.show.img" alt />
+  <div class="goods-item" @click="itemClick" v-if="Object.keys(goodsItem).length !== 0">
+    <img v-lazy="showImage" @load="imgLoad" />
     <div class="goods-info">
       <p>{{goodsItem.title}}</p>
       <span class="price">{{goodsItem.price}}</span>
@@ -22,6 +22,23 @@ export default {
   },
   data() {
     return {};
+  },
+  computed: {
+    showImage() {
+      return this.goodsItem.image || this.goodsItem.show.img;
+    },
+  },
+  methods: {
+    imgLoad() {
+      if (this.$route.path.indexOf("/home") !== -1) {
+        this.$bus.$emit("homeItemImgLoad");
+      } else if (this.$route.path.indexOf("/detail") !== -1) {
+        this.$bus.$emit("detailItemImgLoad");
+      }
+    },
+    itemClick() {
+      this.$router.push("/detail/" + this.goodsItem.iid);
+    },
   },
 };
 </script>

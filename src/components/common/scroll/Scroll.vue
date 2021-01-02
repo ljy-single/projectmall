@@ -30,9 +30,13 @@ export default {
     };
   },
   methods: {
+    // 重新计算content的高度
+    refresh() {
+      this.scroll && this.scroll.refresh();
+    },
     // 滚动到哪个位置，经过多长时间
     scrollTo(x, y, time) {
-      this.scroll.scrollTo(x, y, time);
+      this.scroll && this.scroll.scrollTo(x, y, time);
     },
     //当数据加载完毕以后通知better-scroll
     finishPullUp() {
@@ -52,13 +56,15 @@ export default {
       this.$emit("scroll", position);
     });
     // 3. 下拉加载更多
-    this.scroll.on("pullingUp", () => {
-      this.$emit("pullingUp");
-    });
+    if (this.pullUpLoad) {
+      this.scroll.on("pullingUp", () => {
+        this.$emit("pullingUp");
+      });
+    }
   },
   updated() {
     //重新计算高度
-    this.scroll.refresh();
+    // this.scroll.refresh();
   },
 };
 </script>
