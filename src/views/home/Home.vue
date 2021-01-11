@@ -98,6 +98,9 @@ export default {
       }
       this.$refs.tabControl1.currentIndex = index;
       this.$refs.tabControl2.currentIndex = index;
+      if (this.$refs.tabControl1.$el.offsetTop > 0) {
+        this.$refs.scroll.scrollTo(0, -this.tabOffsetTop, 0);
+      }
     },
     // backClick() {
     //   this.$refs.scroll.scrollTo(0, 0, 300);

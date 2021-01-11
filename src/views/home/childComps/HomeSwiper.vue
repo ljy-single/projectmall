@@ -15,7 +15,7 @@
 <script>
 import { Swiper, SwiperItem } from "components/common/swiper/index.js";
 export default {
-  name: "",
+  name: "HomeSwiper",
   props: {
     banners: {
       type: Array,

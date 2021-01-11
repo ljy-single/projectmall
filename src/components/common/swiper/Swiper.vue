@@ -102,7 +102,9 @@ export default {
     },
     // 设置滚动的位置
     setTransform: function (position) {
+      // translate3d(x,y,z)
       this.swiperStyle.transform = `translate3d(${position}px,0,0)`;
+      // -webkit 是表示针对 safari 浏览器支持，-ms表示针对 IE 浏览器支持。
       this.swiperStyle["-webkit-transform"] = `translate3d(${position}px,0,0)`;
       this.swiperStyle["-ms-transform"] = `translate3d(${position}px)0,0)`;
     },

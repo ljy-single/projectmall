@@ -59,8 +59,11 @@ export default {
       paramInfo: {},
       commentInfo: {},
       recommendInfo: [],
+      // 记录各主题的offset
       themeTopYs: [],
+      // 获取主题的offset
       getthemeTopYs: null,
+      // 记录当前的标题
       currentIndex: 0,
       // message: "",
       // show: false,
@@ -120,15 +123,6 @@ export default {
     getRecommend().then((res) => {
       this.recommendInfo = res.data.data.list;
     });
-    // 4.给getthemeTopYs赋值
-    this.getthemeTopYs = debounce(() => {
-      this.themeTopYs = [];
-      this.themeTopYs.push(0);
-      this.themeTopYs.push(this.$refs.params.$el.offsetTop);
-      this.themeTopYs.push(this.$refs.comment.$el.offsetTop);
-      this.themeTopYs.push(this.$refs.recommend.$el.offsetTop);
-      // console.log(this.themeTopYs);
-    }, 200);
   },
   methods: {
     imageLoad() {
@@ -167,6 +161,7 @@ export default {
       product.title = this.goods.title;
       product.desc = this.goods.desc;
       product.newPrice = this.goods.realPrice;
+      // 除了要展示的数据，iid也要一起传过去
       product.iid = this.iid;
       // 2.将商品添加到购物车
       // 3.弹出添加成功信息
@@ -187,6 +182,15 @@ export default {
     this.$bus.$on("detailItemImgLoad", () => {
       refresh();
     });
+    // 4.给getthemeTopYs赋值
+    this.getthemeTopYs = debounce(() => {
+      this.themeTopYs = [];
+      this.themeTopYs.push(0);
+      this.themeTopYs.push(this.$refs.params.$el.offsetTop);
+      this.themeTopYs.push(this.$refs.comment.$el.offsetTop);
+      this.themeTopYs.push(this.$refs.recommend.$el.offsetTop);
+      // console.log(this.themeTopYs);
+    }, 400);
 
     // this.themeTopYs.push(0);
     // this.themeTopYs.push(this.$refs.params.$el.offsetTop);

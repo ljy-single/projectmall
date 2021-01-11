@@ -22,6 +22,7 @@ export default {
     cartLength() {
       return this.$store.state.cartList.length;
     },
+    // 也可以用vuex的getters，辅助函数mapGetters见官网
   },
   components: {
     NavBar,

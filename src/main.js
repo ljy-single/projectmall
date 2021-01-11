@@ -16,6 +16,7 @@ import toast from 'components/common/toast'
 Vue.use(toast)
 Vue.config.productionTip = false
 FastClick.attach(document.body);
+// 添加事件总线
 Vue.prototype.$bus = new Vue()
 new Vue({
   render: h => h(App),
